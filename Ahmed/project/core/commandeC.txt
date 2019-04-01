@@ -1,0 +1,29 @@
+	<?PHP
+	include "../config.php";
+
+	function afficherEmployes(){
+		//$sql="SElECT * From employe e inner join formationphp.employe a on e.cin= a.cin";
+		$sql="SElECT * From employe";
+		$db = config::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }	
+	}
+	function supprimerEmploye($cin){
+		$sql="DELETE FROM employe where cin= :cin";
+		$db = config::getConnexion();
+        $req=$db->prepare($sql);
+		$req->bindValue(':cin',$cin);
+		try{
+            $req->execute();
+           // header('Location: index.php');
+        }
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }
+	}
+	?>
