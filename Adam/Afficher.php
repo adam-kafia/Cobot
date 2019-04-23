@@ -94,7 +94,7 @@ $listeProduit=$produitC->afficherProduit();
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Products</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a href="ajouter.php">Add Product</a></li>
-                            <li><i class="fa fa-table"></i><a href="">Alter Product</a></li>
+                            <li><i class="fa fa-table"></i><a href="modifier.php">Alter Product</a></li>
                             <li><i class="fa fa-table"></i><a href="">Delete Product</a></li>
                             <li><i class="fa fa-table"></i><a href="afficher.php">View Product</a></li>
                         </ul>
@@ -232,7 +232,7 @@ foreach($listeProduit as $produit){
 		<td><?PHP echo $produit['nom']; ?></td>
 		<td><?PHP echo $produit['description']; ?></td>
 		<td><?PHP echo $produit['Prix']; ?></td>
-        <td><?PHP echo $produit['image']; ?></td>
+        <td><?php echo "<img src = 'samples/".$produit['image'].".jpg' style='width:100px;'>";?><br><?php echo $produit['image'] ?></td>
         <td><?PHP echo $produit['categorie_id']; ?></td>
 		</td>
 	</tr>

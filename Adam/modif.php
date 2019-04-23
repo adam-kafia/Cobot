@@ -17,6 +17,19 @@ if(!empty($categorie)){
 }
 
 ?>
+<?PHP
+include "entities/categorie.php";
+
+$categorieC=new CategorieC();
+
+if (isset($_POST['modifier'])){
+	$nom = $_POST['nom'];
+	$categorie=new Categorie($nom);	
+    $categorieC->modifierCategorie($categorie, (int)$_POST["id"]);
+	header('Location: affichercat.php');
+}
+
+?>
 
 ?>
 <!doctype html>
@@ -111,7 +124,7 @@ if(!empty($categorie)){
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Products</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a href="ajouter.php">Add Product</a></li>
-                            <li><i class="fa fa-table"></i><a href="">Alter Product</a></li>
+                            <li><i class="fa fa-table"></i><a href="modifier.php">Alter Product</a></li>
                             <li><i class="fa fa-table"></i><a href="">Delete Product</a></li>
                             <li><i class="fa fa-table"></i><a href="afficher.php">View Product</a></li>
                         </ul>
@@ -245,12 +258,12 @@ if(!empty($categorie)){
                 Modifier une catégorie
             </header>
             <div class="panel-body">
-                <form class="form-horizontal bucket-form" method="post" action="modifCategorie.php">
+                <form class="form-horizontal bucket-form" method="post" action="modif.php">
                	
 					<div class="form-group">
                         <label class="col-sm-3 control-label">Nom</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" name="nom" value="<?php echo $nom; ?>" required >
+                            <input type="text" class="form-control" name="nom" placeholder="<?php echo $nom; ?>" required >
                         </div>
                     </div>
                 

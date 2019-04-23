@@ -82,32 +82,45 @@ class ProduitC {
 		
 	}
 	function recupererProduit($id){
-		$sql="SELECT * from produit where id= $id";
+		$sql="SELECT * from produit where id=$id";
 		$db = config::getConnexion();
 		try{
 		    $sth = $db->prepare($sql);
 			$sth->execute();
-			$liste = $sth->fetch();
-			return $liste;
+			
+			return $sth;
 		}
         catch (Exception $e){
             die('Erreur: '.$e->getMessage());
         }
 	}
 	
-	function rechercherListeEmployes($nom){
-		$sql="SELECT * from produit where nom=$nom";
+	function rechercherListeEmployes($nomp){
+		$sql="SELECT * from produit where nom LIKE '$nomp'";
 		$db = config::getConnexion();
 		try{
 		 $sth = $db->prepare($sql);
 			$sth->execute();
-			$liste = $sth->fetchAll();
-			return $liste;
+			return $sth;
 		}
         catch (Exception $e){
             die('Erreur: '.$e->getMessage());
         }
 	}
+	function getIDS()
+	{
+		$sql="SELECT * From produit ";
+		$db = config::getConnexion();
+		try{
+			$liste=$db->query($sql);
+			return $liste;
+		}
+		catch (Exception $e)
+		{
+			die('me erreur: '.$e->getMessage());
+		}
+	}
+	
 }
 
 ?>

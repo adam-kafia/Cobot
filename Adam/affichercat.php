@@ -94,7 +94,7 @@ $listeCategorieC=$categorieC->afficherCategorie();
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Products</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a href="ajouter.php">Add Product</a></li>
-                            <li><i class="fa fa-table"></i><a href="">Alter Product</a></li>
+                            <li><i class="fa fa-table"></i><a href="modifier.php">Alter Product</a></li>
                             <li><i class="fa fa-table"></i><a href="">Delete Product</a></li>
                             <li><i class="fa fa-table"></i><a href="afficher.php">View Product</a></li>
                         </ul>
@@ -224,12 +224,12 @@ $listeCategorieC=$categorieC->afficherCategorie();
 				  foreach($listeCategorieC as $categorie){
 					  ?>
 					    <tr>
-							<td><?php echo $categorie['nom']; ?></td>
+							<td><?php echo $categorie['nom_c']; ?></td>
 				            
 							<td>
-							   <button type="" value="" class="btn-actions"><a href="modif.php?id=<?php echo $categorie['id']?>" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i></a></button>
+							   <button type="" value="" class="btn-actions"><a href="modif.php?id=<?php echo $categorie['id']?>" class="active" ui-toggle-class=""><i class="fa fa-check-square"></i></a></button>
 							  <form method="POST" action="supprimerCategorie.php">
-									<button type="submit" value="" class="btn-actions"><i class="fa fa-times text-danger text"></i></button>
+									<button type="submit" value="" class="btn-actions"><i class="fa fa-minus-square"></i></button>
 									<input type="hidden" value="<?php echo $categorie['id']; ?>" name="id">
 	                           </form>
 							</td>

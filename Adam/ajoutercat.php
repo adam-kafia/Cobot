@@ -1,4 +1,18 @@
 <!doctype html>
+<?PHP
+include "core/categorieC.php";
+include "entities/categorie.php";
+
+$categorieC=new CategorieC();
+
+if (isset($_POST['ajouter'])){
+	$nom_c = $_POST['nom_c'];
+	$categorie=new Categorie($nom_c);	
+    $categorieC->ajouterCategorie($categorie);
+	header('Location: affichercat.php');
+}
+
+?>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -89,7 +103,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Products</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a href="ajouter.php">Add Product</a></li>
-                            <li><i class="fa fa-table"></i><a href="">Alter Product</a></li>
+                            <li><i class="fa fa-table"></i><a href="modifier.php">Alter Product</a></li>
                             <li><i class="fa fa-table"></i><a href="">Delete Product</a></li>
                             <li><i class="fa fa-table"></i><a href="afficher.php">View Product</a></li>
                         </ul>
@@ -224,11 +238,11 @@
                 Add Catalogue
             </header>
             <div class="panel-body">
-                <form class="form-horizontal bucket-form" method="post" action="ajoutCategorie.php" enctype="multipart/form-data">
+                <form class="form-horizontal bucket-form" method="post" action="ajoutercat.php" enctype="multipart/form-data">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" name="nom" required  value="" >
+                            <input type="text" class="form-control" name="nom_c" required  value="" >
                         </div>
                     </div>
 					

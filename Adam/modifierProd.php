@@ -20,8 +20,15 @@ if (isset($_POST['ajouter'])){
 	$description = $_POST['description'];
     $categorie_id = $_POST['categorie']; 
 	$produit=new Produit($nom,$image,$prix,$description,$categorie_id);	
-    $produitC->ajouterProduit($produit);
-	header('Location: afficher.php');
+    $produitC->modifierProduit($produit,$_POST['id']);
+    header('Location: afficher.php');
+    
+}
+if(isset($_GET['id']))
+{
+    $resultat=$produitC->recupererProduit($_GET['id']);
+    print_r($resultat);
+	foreach($resultat as $row){}
 }
 
 ?>
@@ -248,28 +255,38 @@ if (isset($_POST['ajouter'])){
         <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-                Add Product
+                Modify Product
             </header>
+            <?php
+            $ids=$produitC->getIDS();
+            
+            ?>
             <div class="panel-body">
-                <form class="form-horizontal bucket-form" method="post" action="ajouter.php" enctype="multipart/form-data">
-                    <div class="form-group">
+                <form class="form-horizontal bucket-form" method="post" action="modifierProd.php" enctype="multipart/form-data">
+                <div class="form-group">
+                       
+                        <div class="col-sm-6">
+                            <input type="hidden" class="form-control" name="id"  value="<?PHP echo $_GET['id'];?>"  required  >
+                        </div>
+                    </div>    
+                <div class="form-group">
                         <label class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" name="nom" required  value="" >
+                            <input type="text" class="form-control" name="nom"  value="<?PHP echo $row['nom'];?>"  required >
                         </div>
                     </div>
 					
 					<div class="form-group">
                         <label class="col-sm-3 control-label">Image</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" name="image" required >
+                            <input type="text" class="form-control" name="image" value="<?PHP echo $row['image'];?>" required >
                         </div>
                     </div>
                    
                    <div class="form-group">
                         <label class="col-sm-3 control-label">Price</label>
                         <div class="col-sm-6">
-                            <input type="number" class="form-control" name="prix" required value="" step="0.01" min="0" >
+                            <input type="number" class="form-control" name="prix" required value="<?PHP echo $row['Prix'];?>" step="0.01" min="0" >
                         </div>
                     </div>
 					
@@ -277,28 +294,31 @@ if (isset($_POST['ajouter'])){
 					<div class="form-group">
                         <label class="col-sm-3 control-label">Description</label>
                         <div class="col-sm-6">
-							<textarea  class="form-control" name="description" required  ></textarea>
+							<input  class="form-control" name="description" value="<?PHP echo $row['description'];?>" required  >
                         </div>
                     </div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label">Categorie</label>
+                        <label class="col-sm-3 control-label">Catégorie</label>
                         <div class="col-sm-6">
-                            <select  class="form-control" name="categorie">
-							   <option value='0'></option>
+                            <select  class="form-control" name="categorie" required>
+							   <option></option>
 							   <?php 
 							       if(!empty($listeCategorie)){
 									   foreach($listeCategorie as $categorie){
-										  echo "<option value='".$categorie['id']."'>".$categorie['nom_c']."</option>";
+										  echo "<option value='".$categorie['id']."'>".$categorie['nom']."</option>";
 									   }
 								   }
 							   ?>
 							</select>
                         </div>
                     </div>
+                     <?PHP
+					 
+					 ?>
 					<div class="form-group">
 						<div class="col-lg-offset-3 col-lg-6">
-							<button class="btn btn-primary" type="submit" name="ajouter" >Ajouter</button>
+							<button class="btn btn-primary" type="submit" name="ajouter" >Modifier</button>
 						</div>
                     </div>
                 </form>
