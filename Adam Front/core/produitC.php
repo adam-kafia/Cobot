@@ -174,6 +174,18 @@ function afficherProduitParPrix_d(){
 		die('Erreur: '.$e->getMessage());
 	}	
 }
+function nbProdParCat($cat)
+{
+	$query = "select count(*) From produit where categorie_id=$cat";
+	$db = config::getConnexion();
+	try{
+		$result = $db->query($query);
+		$l=$result->fetch(0);
+		return $l[0];
+	}
+	catch (Exception $e){
+		die('Erreur: '.$e->getMessage());
+	}
 }
-
+}
 ?>

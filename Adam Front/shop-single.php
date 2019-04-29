@@ -1,15 +1,25 @@
 <?php
 include "core/produitC.php";
-$produitC =new ProduitC();
+include_once "core/config.php";
 include "core/categorieC.php";
-$categorieC =new categorieC();
+
 
 
 if(isset($_GET['id']))
 {
-	$resultat=$produitC->recupererProduit($_GET['id']);
-
+	$produitC =new ProduitC();
+$id=$_GET['id'];
+	$sql="select * From produit where id = $id";
+		$db = config::getConnexion();
 	
+			$sth = $db->prepare($sql);
+			$sth->execute();
+			$liste = $sth->fetchAll(0);
+
+
+$resultat=$produitC->recupererProduit($id);
+	$categorie=new CategorieC();
+ $listeCat=$categorie->recupererCategorie($liste[0]['categorie_id']);
 }
 
 
@@ -164,10 +174,10 @@ if(isset($_GET['id']))
 									<li class="current">
 										<a href="shop-list.php">Shop List</a>
 									<li>
-										<a href="sign-in.html">Sign In</a>
+										<a href="sign-in.php">Sign In</a>
 									</li>
 									<li>
-										<a href="sign-up.html">Sign Up</a>
+										<a href="sign-up.php">Sign Up</a>
 									</li>
 									<li>
 										<a href="checkout.html">CheckOut</a>
@@ -318,13 +328,7 @@ if(isset($_GET['id']))
 								</form>
 								<div class="product_meta">
 									<span class="sku_wrapper">SKU: <span class="sku"><?PHP echo $row['id']; ?></span></span>
-									<?php //$listeCategorie=$categorieC->recupererCategorie($resultat['categorie_id']);
-									//foreach ($listeCategorie as $cat)
-									//{ ?>
-									<span class="sku_wrapper">Category: <span class="sku">Pizza<?php //echo $listeCategorie['nom_c']?></span></span>
-									<?php
-									//}
-									?>
+									<span class="sku_wrapper">Category: <span class="sku"><?php  echo $listeCat[0]['nom_c']; ?></span></span>
 								</div>
 								<div class="social">
 									<a href="#">
@@ -369,10 +373,6 @@ if(isset($_GET['id']))
 										<tr>
 											<th>Weight</th>
 											<td class="product_weight">2kg</td>
-										</tr>
-										<tr>
-											<th>Dimensions</th>
-											<td class="product_dimensions">15 x 20 x 15 cm</td>
 										</tr>
 									</tbody>
 								</table>

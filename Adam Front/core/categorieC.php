@@ -65,6 +65,20 @@ class CategorieC {
 		try{
 		    $sth = $db->prepare($sql);
 			$sth->execute();
+			$r=$sth->fetchAll();
+			return $r;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }
+	}
+
+	function recupererCategoriePro($id){
+		$sql="SELECT * from categorie where id=$id";
+		$db = config::getConnexion();
+		try{
+		    $sth = $db->prepare($sql);
+			$sth->execute();
 			
 			return $sth;
 		}

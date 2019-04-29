@@ -73,7 +73,7 @@ if (isset($_GET['orderby']))
 	
 	<body class="preload">
 
-		<!-- PAGE LOADER -->
+		<!-- PAGE LOADER 
 		<div class="images-preloader">
 		    <div id="preloader" class="rectangle-bounce">
 		        <span></span>
@@ -84,7 +84,7 @@ if (isset($_GET['orderby']))
 		    </div>
 		</div>
 		
-		<header>
+		<header>-->
 			<!-- HEADER ON DESKTOP -->
 			<nav class="navbar-desktop">
 				<div class="left">
@@ -167,10 +167,10 @@ if (isset($_GET['orderby']))
 									<li class="current">
 										<a href="shop-list.php">Shop List</a>
 									<li>
-										<a href="sign-in.html">Sign In</a>
+										<a href="sign-in.php">Sign In</a>
 									</li>
 									<li>
-										<a href="sign-up.html">Sign Up</a>
+										<a href="sign-up.php">Sign Up</a>
 									</li>
 									<li>
 										<a href="checkout.html">CheckOut</a>
@@ -389,7 +389,7 @@ if (isset($_GET['orderby']))
 										<li>
 											<form method="get" action ="shop-list.php" class="search-form">
 											<button class="btn btn-light" type="submit">
-											<?php echo $categorie['nom_c'];?>
+											<?php echo $categorie['nom_c'];echo "<span> (";echo $produitC->nbProdParCat($categorie['id']); echo ")</span>";?>
 											<input class="form-control" name="inputCat" type="hidden" value="<?php echo $categorie['nom_c'];?>">
 											</button>
 											</form>
