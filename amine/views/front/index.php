@@ -1013,22 +1013,39 @@
 							<a href="index.html">
 								<img src="images/logo.png" alt="">
 							</a>
+
+
+
+
+
+
+
+
 						</div>
 						<div class="row justify-content-between justify-content-xl-start">
 							<div class="col-md-3  ft-col">
 								<h6>About Us</h6>
 								<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusan-tium doloremque laudantium, totam rem aperiam,</p>
 							</div>
+
 							<div class="col-md-5  col-xl-4 offset-xl-1 ft-col">
-								<h6>Get news & offers</h6>
-								<form method="get">
+								<h6>Envoyer Réclammation</h6>
+								<form method="POST" action ="newsletter.php  ">
 									<div class="form-inner">
-										<input type="text" placeholder="Enter your mail">
+										<input type="text" placeholder="Entrer your mail">
+										
+										<input type="text" placeholder="Entrer votre réclammtion">
+										
+
 										<button>
 											<span class="lnr lnr-envelope"></span>
 										</button>
+
+
+
+									</form>
 									</div>
-								</form>
+								
 								<div class="social">
 									<a href="#">
 										<i class="zmdi zmdi-twitter"></i>

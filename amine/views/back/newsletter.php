@@ -15,9 +15,12 @@
                   if(isset($_POST['destinataire'])) { 
                $element= new Newsletter($_POST['des'] ,$_POST['destinataire']);
                $element->ajouterNewsletter($element);
+
            }
+           header("location: newsletter.php");
             }elseif (isset($_POST['idDelete'])) {
                 $page->supprimer($_POST['idDelete']);
+                header("location: newsletter.php");
             }
 ?>
 

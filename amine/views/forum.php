@@ -1,4 +1,5 @@
  <?php  
+ session_start();
     include "../../config.php";
     include "../../entities/Forum.php";
     include "../../core/ForumCore.php";

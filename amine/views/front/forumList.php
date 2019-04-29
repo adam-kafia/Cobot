@@ -1,8 +1,13 @@
 
 <?php  
+session_start();
     include "../../config.php";
     include "../../entities/Forum.php";
     include "../../core/ForumCore.php";
+
+    include "../../entities/Post.php";
+    include "../../core/PostCore.php";
+
     // MailUser For newsletter
     include "../../entities/MailUser.php";
     include "../../core/MailUserCore.php";
@@ -13,7 +18,22 @@
             if(isset($_POST['mail'])) { 
                $element = new mailUser($_POST['mail']);
                $element->ajouterMailUser($element);
+               header("location: forumList.php");
             }
+
+             if(isset($_POST['ajouter'])) {
+                 var_dump($_FILES);
+               $element= new Forum($_POST['titre'],$_POST['des'],$_FILES["image"]["name"]);
+               $fc = new ForumCore();
+               $fc->ajouterForum($element);
+
+			if(isset($_POST['message']) ) {		 
+               $element = new Post($_POST['message'],$_POST['des']);
+               $element->ajouterPost($element);
+            }
+		header("location: forumList.php");
+            }
+            
 
     ?>
     <!DOCTYPE html>
@@ -363,15 +383,19 @@
 									<div class="item">
 										<div class="thumb">
 											<a href="shop-single.lnr-phone-handsetml" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-												<img src="images/biga2.jpg" alt="">
+												<img src="<?PHP echo 'uploads/'.$row['image'];?>" alt="">
 											</a>
-											<form action="forumDis.php" >
-												<input type="text" name="forum" hidden value="<?PHP echo $row['des']; ?>">
+											<form action="forumDis.php" method="GET" >
+												<input type="text" name="forum" hidden value="<?PHP echo $row['id']; ?>">
 												<button type="submit"  class="button product_type_simple add_to_cart_button ajax_add_to_cart" >Rejpoindre </button>
 												
 											</form>
 											
-										</div>
+
+
+
+
+									</div>
 										<div class="info">
 											<h5 class="woocommerce-loop-product__title">
 												<a href="shop-single.html"><?PHP echo $row['des']; ?></a>
@@ -438,6 +462,95 @@
 			</section>
 		</main>
 		
+
+
+
+
+
+
+
+
+
+
+		    <!-- BOOK A TABLE -->
+		    <section class="booking">
+		    	<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6 px-0">
+							<div class="image-holder"></div>
+						</div>
+						<div class="col-md-6 px-0">
+							<div class="booking-content">
+								<div class="section-header">
+									<h2 class="text-white">Ajouter un sujet</h2>
+									<span>~ découvrez notre forum  ~</span>
+								</div>
+								<form method="POST" action="forumList.php" enctype="multipart/form-data">
+									
+									<div class="form-row">
+										
+										<div class="form-col">
+			                                <div class="form-holder">
+			                                	<input type="text" class="form-control" placeholder=" Titre Du sujet" name='titre'>
+			                                </div>
+										</div>
+									</div>
+									<div class="form-row">
+
+										<div class="form-col">
+			                                <div class="form-holder">
+                                                <textarea class="form-control" name="des" placeholder="Description du sujet" cols="3"></textarea>
+<!--
+<input type="text" class="form-control" placeholder=" Titre Du sujet" name='des'>-->
+			                                </div>
+										</div>
+									</div>
+									<div class="form-row">
+
+										<div class="form-col">
+			                                <div class="form-holder">
+			                                	<input type="file" class="form-control" placeholder=" Titre Du sujet" name='image'>
+			                                </div>
+										</div>
+									</div>
+										
+									<div class="btn-holder">
+										<button name="ajouter" class="au-btn has-bg au-btn--hover round">Ajouter le sujet </button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+		    	</div>
+		    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<footer>
 			<!-- FOOTER TOP -->
 			<div class="ft-top">

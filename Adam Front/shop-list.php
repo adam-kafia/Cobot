@@ -73,7 +73,7 @@ if (isset($_GET['orderby']))
 	
 	<body class="preload">
 
-		<!-- PAGE LOADER 
+		<!-- PAGE LOADER -->
 		<div class="images-preloader">
 		    <div id="preloader" class="rectangle-bounce">
 		        <span></span>
@@ -84,7 +84,7 @@ if (isset($_GET['orderby']))
 		    </div>
 		</div>
 		
-		<header>-->
+		<header>
 			<!-- HEADER ON DESKTOP -->
 			<nav class="navbar-desktop">
 				<div class="left">
