@@ -1,10 +1,10 @@
 <?php
 class Categorie {
 	private $id;
-	private $nom;
+	private $nom_c;
 
-	function __construct($nom){
-		$this->nom=$nom;
+	function __construct($nom_c){
+		$this->nom_c=$nom_c;
 	}
 	function getId(){
 		return $this->id;

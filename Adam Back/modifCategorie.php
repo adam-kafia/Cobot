@@ -6,8 +6,7 @@ $categorieC=new CategorieC();
 
 if (isset($_POST['modifier'])){
 	$nom = $_POST['nom'];
-	$categorie=new Categorie($nom);	
-    $categorieC->modifierCategorie($categorie, (int)$_POST["id"]);
+    $categorieC->modifierCategorie($nom, (int)$_POST["id"]);
 	header('Location: affichercat.php');
 }
 

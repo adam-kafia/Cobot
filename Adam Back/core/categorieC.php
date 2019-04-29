@@ -2,13 +2,12 @@
 include_once "config.php";
 class CategorieC {
 	
-	function ajouterCategorie($categorie){
-		$sql="insert into categorie (nom) values(:nom)";
+	function ajouterCategorie($nom_c){
+		$sql="insert into categorie (nom_c) values(:nom)";
 		$db = config::getConnexion();
 		try{
-        $req=$db->prepare($sql);
-        $nom=$categorie->getNom();  
-		$req->bindValue(':nom',$nom);
+        $req=$db->prepare($sql); 
+		$req->bindValue(':nom',$nom_c);
         $req->execute();
            
         }
@@ -43,13 +42,12 @@ class CategorieC {
             die('Erreur: '.$e->getMessage());
         }
 	}
-	function modifierCategorie($categorie,$id){
-		$sql="UPDATE categorie SET nom = :nom where id = :id";
+	function modifierCategorie($nom_c,$id){
+		$sql="UPDATE categorie SET nom_c=:nom where id=:id";
 		$db = config::getConnexion();
 	try{		
         $req=$db->prepare($sql);
-	    $nom=$categorie->getNom();
-		$req->bindValue(':nom',$nom);
+		$req->bindValue(':nom',$nom_c);
 		$req->bindValue(':id',$id);
     	$s=$req->execute();
 	

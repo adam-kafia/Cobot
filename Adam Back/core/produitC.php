@@ -82,13 +82,13 @@ class ProduitC {
 		
 	}
 	function recupererProduit($id){
-		$sql="SELECT * from produit where id=$id";
+		$sql="select * From produit where id=$id";
 		$db = config::getConnexion();
 		try{
-		    $sth = $db->prepare($sql);
+			$sth = $db->prepare($sql);
 			$sth->execute();
-			
-			return $sth;
+			$liste = $sth->fetchAll();
+			return $liste;
 		}
         catch (Exception $e){
             die('Erreur: '.$e->getMessage());
@@ -120,7 +120,19 @@ class ProduitC {
 			die('me erreur: '.$e->getMessage());
 		}
 	}
-	
+	function nbProdParCat($cat)
+{
+	$query = "select count(*) From produit where categorie_id=$cat";
+	$db = config::getConnexion();
+	try{
+		$result = $db->query($query);
+		$l=$result->fetch(0);
+		return $l[0];
+	}
+	catch (Exception $e){
+		die('Erreur: '.$e->getMessage());
+	}
+}
 }
 
 ?>
