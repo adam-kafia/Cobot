@@ -1,18 +1,140 @@
 <?php  
+session_start();
     include "../../config.php";
-    include "../../entities/Post.php";
-    include "../../core/PostCore.php";
-   
-    $page = new PostCore();
-    $liste = $page->afficher($_GET['forum']);
+    include "../../entities/Avis.php";
+    include "../../core/ForumCore.php";
+    include "../../core/AvisC.php";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-     if(isset($_GET['message']) ) {		 
-               $element = new Post($_GET['message'],$_GET['forum']);
+// Load Composer's autoloader
+require 'vendor/autoload.php';
+
+
+function send_message ( $post_body, $url, $username, $password) {
+    $ch = curl_init( );
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:Basic '. base64_encode("$username:$password")
+    );
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt ( $ch, CURLOPT_URL, $url );
+    curl_setopt ( $ch, CURLOPT_POST, 1 );
+    curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt ( $ch, CURLOPT_POSTFIELDS, $post_body );
+    // Allow cUrl functions 20 seconds to execute
+    curl_setopt ( $ch, CURLOPT_TIMEOUT, 20 );
+    // Wait 10 seconds while trying to connect
+    curl_setopt ( $ch, CURLOPT_CONNECTTIMEOUT, 10 );
+    $output = array();
+    $output['server_response'] = curl_exec( $ch );
+    $curl_info = curl_getinfo( $ch );
+    $output['http_status'] = $curl_info[ 'http_code' ];
+    $output['error'] = curl_error($ch);
+    curl_close( $ch );
+    return $output;
+}
+
+if(isset($_POST['ajouter'])){
+    $avisc = new AvisC();
+    $avis = new Avis($_POST['produit'],$_POST['user'],$_POST['commentaire'],$_POST['note']);
+    $avisc->ajouteravis($avis);
+    //mail
+    $mail = new PHPMailer(true);
+
+
+        //Server settings
+        $mail->SMTPDebug = 1;                                       // Enable verbose debug output
+        $mail->isSMTP();                                            // Set mailer to use SMTP
+        $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'amine.farah@esprit.tn';                     // SMTP username
+        $mail->Password   = '07212617';                               // SMTP password
+        $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+        $mail->Port       = 587;                                    // TCP port to connect to
+
+        //Recipients
+        $mail->setFrom('amine.farah@esprit.tn', 'Mailer');
+        $mail->addAddress('amine.farah@esprit.tn');
+
+
+
+        // Content
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = 'Publication';
+        $mail->Body    = 'Votre publication a ete ajoutee <b>in bold!</b>';
+        $mail->AltBody = 'Votre publication a ete ajoutee';
+
+        $mail->send();
+
+
+
+//SMS
+    $username = 'sdsdffdf';
+    $password = 'sdsdffdf';
+    $messages = array(
+        array('to'=>'+21699786912', 'body'=>'succees!')
+    );
+
+$result = send_message( json_encode($messages), 'https://api.bulksms.com/v1/messages', $username, $password );
+
+    if ($result['http_status'] != 201) {
+        // print "Error sending: " . ($result['error'] ? $result['error'] : "HTTP status ".$result['http_status']."; Response was " .$result['server_response']);
+    } else {
+        //print "Response " . $result['server_response'];
+        // Use json_decode($result['server_response']) to work with the response further
+    }
+
+
+
+}
+if(isset($_POST['modifier'])){
+    $avisc = new AvisC();
+
+    $avis = new Avis($_POST['produitm'],$_POST['userm'],$_POST['commentairem'],$_POST['notem']);
+    $avis->setId($_POST['id']);
+    $avisc->modifieravis($avis);
+
+}
+if(isset($_POST['supprimer'])){
+    $avisc = new AvisC();
+    $avisc->supprimeravis($_POST['id']);
+
+}
+
+
+   	if (isset($_GET['forum'])){
+
+                $fc = new ForumCore();
+                $listef = $fc->recherche($_GET['forum']);
+
+
+            $_SESSION['forum'] = $listef['des'];//$listef[0]['des'];
+
+   	}
+   	 	if (isset($_POST['message'])){
+   	 		if(! isset($_SESSION['message']) ){
+   	 			$_SESSION['message']= $_POST['message'];
+   	 		}
+   	 		 unset($_SESSION['message']);
+   	}
+   	
+   	 if(isset($_POST['message']) ) {		 
+               $element = new Post($_POST['message'],$_SESSION['forum']);
                $element->ajouterPost($element);
+               //header("location: forumDis.php");
             }
 
 
+    $commentaire = isset($_POST['commentaire']) ? $_POST['commentaire'] : NULL;
+
+
+
+    
+
     ?>
+
+
     <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -61,10 +183,100 @@
 
 	    <!-- STYLE CSS -->
 	    <link rel="stylesheet" href="css/style.css" />
+
+        <script src="jquery-2.2.4.min.js"></script>
+        <script src="jquery.validate.min.js" type="text/javascript"></script>
+        <script src="messages_fr.js" type="text/javascript"></script>
+
+        <style>
+            @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+            fieldset, label { margin: 0; padding: 0; }
+            body{ margin: 20px; }
+            h1 { font-size: 1.5em; margin: 10px; }
+
+            /****** Style Star Rating Widget *****/
+
+            .rating {
+                border: none;
+                float: left;
+            }
+
+            .rating > input { display: none; }
+            .rating > label:before {
+                margin: 5px;
+                font-size: 1.25em;
+                font-family: FontAwesome;
+                display: inline-block;
+                content: "\f005";
+            }
+
+            .rating > .half:before {
+                content: "\f089";
+                position: absolute;
+            }
+
+            .rating > label {
+                color: #ddd;
+                float: right;
+            }
+
+            /***** CSS Magic to Highlight Stars on Hover *****/
+
+            .rating > input:checked ~ label, /* show gold star when clicked */
+            .rating:not(:checked) > label:hover, /* hover current star */
+            .rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+            .rating > input:checked + label:hover, /* hover current star when changing rating */
+            .rating > input:checked ~ label:hover,
+            .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+            .rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+        </style>
 	</head>
 	
 	<body class="preload">
 
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form id="tovalidate" method="POST" action="#">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modifier</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="hiddeninput" name="id">
+                        <div class="contact_form_inputs d-flex flex-md-row flex-column justify-content-between align-items-between">
+                            note :<fieldset class="rating">
+                                <input required type="radio" id="sstar5" name="notem" value="5" /><label class = "full" for="sstar5" title="Awesome - 5 stars"></label>
+                                <input type="radio" id="sstar4" name="notem" value="4" /><label class = "full" for="sstar4" title="Pretty good - 4 stars"></label>
+                                <input type="radio" id="sstar3" name="notem" value="3" /><label class = "full" for="sstar3" title="Meh - 3 stars"></label>
+                                <input type="radio" id="sstar2" name="notem" value="2" /><label class = "full" for="sstar2" title="Kinda bad - 2 stars"></label>
+                                <input type="radio" id="sstar1" name="notem" value="1" /><label class = "full" for="sstar1" title="Sucks big time - 1 star"></label>
+                            </fieldset>
+                            <input type="hidden" name="produitm" value="<?php echo($_GET['forum']); ?>">
+                            <input type="hidden" name="userm" value="<?php echo($_GET['user']); ?>">
+                        </div>
+                        <div class="contact_form_text">
+                            <textarea id="contact_form_message" class="form-control" name="commentairem" rows="4" placeholder="Message" required data-error="Please, write us a message." minlength="2" ></textarea>
+                        </div>
+                        <div class="contact_form_button">
+                            <input type="submit" name="modifier" value="modifier" class="button contact_submit_button">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                <script>$("#tovalidates").validate();</script>
+            </div>
+
+        </div>
+    </div>
 		<!-- PAGE LOADER -->
 		<div class="images-preloader">
 		    <div id="preloader" class="rectangle-bounce">
@@ -478,56 +690,78 @@
 				</div>
 			</div>
 		</header>
-		
+
 		<main id="contact-us-page">
 			<!-- PAGE INFO -->
-			<section class="page-info set-bg" data-bg="images/biga2.jpg">
+			<section class="page-info set-bg" data-bg="<?php echo 'uploads/'.$listef['image'];?>">
 				<div class="section-header">
-					<h1 class="text-white"><?php echo $_GET['forum'] ; ?></h1>
+					<h1 class="text-white"><?php echo $listef['titre'];?></h1>
 					<span>~ Discussion ~</span>
 				</div>
 			</section>
+<center><?php echo $listef['des'];?></center>
 
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="comments-list">
+
+            <?php
+            $avisc = new AvisC();
+            $avis = $avisc->afficherAvis($_GET['forum']);
+            foreach ($avis as $row) {?>
+                <div class="media">
+                    <div class="media-body">
+
+                        <span><h4 class="media-heading user_name"><?php echo $row['user']; ?></h4> Note :  <?php echo $row['note']; ?>/5</span>
+                        <br>Avis : <?php echo $row['commentaire']; ?>
+                        
+                            <br>
+                            <br>
+                            <span class="btn-group"><button class="btn" onclick="modif<?php echo $row['id']; ?>()"  data-toggle="modal" data-target="#myModal">&nbsp&nbsp Modifier &nbsp&nbsp</button> &nbsp;&nbsp;&nbsp;
+                                <form method="POST" action="#">
+                                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                    <input type="submit" name="supprimer" value="&nbsp&nbsp Supprimer &nbsp&nbsp" class="btn">
+                                </form>
+                            </span><br><br><br><br>
+                            <script>
+                                function modif<?php echo $row['id']; ?>() {
+                                    alert("<?php echo $row['id']; ?>")
+                                    document.getElementById("hiddeninput").value = "<?php echo $row['id']; ?>";
+                                }
+                            </script>
+                        <?php } ?>
+                    </div>
+                </div>
+            
+                        </div></div></div></div>
 			<!-- CONTACT US -->
 			<section class="contact-us section-primary">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-6">
-							<div class="contact-us-content">
-<?php  
-                           foreach($liste as $row){
-   							 ?>
-								<h3><?php echo $row['id'];  ?></h3>
 
-								<p><?php echo $row['des'];  ?></p>
-							 <?php
-}
-?>
-
-
-								<div class="social">
-									<a href="#">
-										<i class="zmdi zmdi-twitter"></i>
-									</a>
-									<a href="#">
-										<i class="zmdi zmdi-facebook-box"></i>
-									</a>
-									<a href="#">
-										<i class="zmdi zmdi-linkedin"></i>
-									</a>
-									<a href="#">
-										<i class="zmdi zmdi-instagram"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="contact-us-form">
-								<form action="forumDis.php" method="GET" >
-								<input type="text" name="forum" value="<?php echo $_GET['forum'] ; ?>" hidden>
-										<textarea class="form-control" placeholder="Repondre" name="message" required></textarea>
-									<button  type="submit" class="au-btn round has-bg medium au-btn--hover">Envoyer</button>
-								</form>
+                                <form method="POST" action="#">
+                                    <div class="contact_form_inputs d-flex flex-md-row flex-column justify-content-between align-items-between">
+                                        note :<fieldset class="rating">
+                                            <input required type="radio" id="star5" name="note" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                                            <input type="radio" id="star4" name="note" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                                            <input type="radio" id="star3" name="note" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                                            <input type="radio" id="star2" name="note" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                                            <input type="radio" id="star1" name="note" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                                        </fieldset>
+                                        <input type="hidden" name="produit" value="<?php echo($_GET['forum']); ?>">
+                                    </div>
+                                    <div class="contact_form_text">
+                                        <textarea id="contact_form_message" class="form-control" name="commentaire" rows="4" placeholder="Message" required minlength="2" data-error="Please, write us a message."></textarea>
+                                    </div>
+                                    <div class="contact_form_button">
+                                        <input type="submit" name="ajouter" value="Send Message" class="button contact_submit_button">
+                                    </div>
+                                </form>
+
 							</div>
 						</div>
 					</div>				

@@ -8,8 +8,10 @@
             if(isset($_POST['des'])) { 
                $element= new Notification($_POST['des']);
                $element->ajouterNotification($element);
+               header("location: notification.php");
             }elseif (isset($_POST['idDelete'])) {
                 $page->supprimer($_POST['idDelete']);
+                header("location: notification.php");
             }
 ?>
 <!doctype html>

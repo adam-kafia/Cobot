@@ -5,11 +5,31 @@
     $page = new ForumCore();
     $liste = $page->afficher();
 
-            if(isset($_POST['des'])) { 
-               $element= new Forum($_POST['des']);
-               $element->ajouterForum($element);
-            }elseif (isset($_POST['idDelete'])) {
+            if(isset($_POST['ajouter'])) {
+               $element= new Forum($_POST['titre'],$_POST['des'],$_FILES["image"]["name"]);
+               $fc = new ForumCore();
+               $fc->ajouterForum($element);
+
+            if(isset($_POST['message']) ) {      
+               $element = new Post($_POST['message'],$_POST['des']);
+               $element->ajouterPost($element);
+            }
+        
+            }
+            elseif (isset($_POST['idDelete'])) {
                 $page->supprimer($_POST['idDelete']);
+                
+            }
+
+
+            if(isset($_POST['modifier'])){
+                var_dump($_FILES);
+                 //move_uploaded_file($_FILES["image"]["tmp_name"], __DIR__.'127.0.0.1/projet%20web/projetweb/views/front/uploads/'. basename($_FILES["image"]["name"]));
+                $f = new Forum($_POST['des'],$_POST['titre'],$_POST['des'],$_FILES["image"]["name"]);
+                $f->setId($_POST['id']);
+                $dc = new ForumCore();
+                $dc->modifier($f);
+
             }
 ?>
 
@@ -68,17 +88,7 @@
                         <a href="newsletter.php" ><i class="menu-icon fa fa-area-chart"></i>Newsletter </a>
                     </li>
 
-                    <li>
-                        <a href="#" ><i class="menu-icon fa fa-calendar-o"></i>Blog</a>
-                    </li>
-
-                     <li>
-                        <a href="notification.php" ><i class="menu-icon fa fa-bell"></i>Notification</a>
-                    </li>
-
-                     <li>
-                        <a href="#" ><i class="menu-icon fa fa-warning"></i>Alerte</a>
-                    </li>
+                   
 
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -151,12 +161,12 @@
                         </div>
                         <div class="modal-body">
                             <form id="ajout" method="post" action="forum.php">
-                                <div class="form-group"><label  class=" form-control-label">Designation</label><input type="text" placeholder="taper la designation du Sujet " class="form-control" name='des'></div>
+                                <div class="form-group"><label  class=" form-control-label">titre</label><input type="text" placeholder="taper la designation du Sujet " class="form-control" name='des'></div>
                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Quitter</button>
-                            <button type="button" id="add"class="btn btn-primary" >Enregistrer</button>
+                            <button name="ajouter" type="button" id="add"class="btn btn-primary" >Enregistrer</button>
                         </div>
 
                     </div>
@@ -192,11 +202,75 @@
     <button type="submit" class="btn btn-danger">Supprimer</button>
     <input type="hidden" value="<?PHP echo $row['id']; ?>" name="idDelete">
     </form>
+    <button type="reset" onclick="update(<?php echo $row['id']; ?>)" class="btn btn-success" data-toggle="modal" data-target="#myModal">update</button>
+    </form>
+
+
+
+
     </td>
     </tr>
     <?php
 }
 ?>
+<script type="text/javascript">
+    function update(id) {
+        document.getElementById('toupdate').value = id;
+        alert(id);
+        // body...
+    }
+</script>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="#" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" id="toupdate">
+                                    <div class="form-row">
+                                        
+                                        <div class="form-col">
+                                            <div class="form-holder">
+                                                <input type="text" class="form-control" placeholder=" Titre Du sujet" name='titre'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+
+                                        <div class="form-col">
+                                            <div class="form-holder">
+                                                <textarea class="form-control" name="des" placeholder="Description du sujet" cols="3"></textarea>
+<!--
+<input type="text" class="form-control" placeholder=" Titre Du sujet" name='des'>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+
+                                        <div class="form-col">
+                                            <div class="form-holder">
+                                                <input type="file" class="form-control" placeholder=" Titre Du sujet" name='image'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                    <div class="btn-holder">
+                                        <button name="modifier" class="au-btn has-bg au-btn--hover round">Modifier le sujet </button>
+                                    </div>
+                                </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
                                     </tbody>
                                 </table>
                             </div>

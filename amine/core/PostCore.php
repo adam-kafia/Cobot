@@ -4,10 +4,13 @@ class PostCore {
 
 	function afficher($forum){
 		
-		$sql="SElECT * From post where forum ='$forum'";
+		$sql="SElECT * From post  where forum = :forum";
 		$db = config::getConnexion();
 		try{
-		$liste=$db->query($sql);
+		 $req =$db->prepare($sql);
+		$req->bindValue(':forum',$forum);
+		 $req->execute();
+		 $liste = $req->fetchAll(PDO::FETCH_NAMED);
 		return $liste;
 		}
         catch (Exception $e){
