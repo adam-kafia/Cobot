@@ -131,7 +131,7 @@ class PanierC{
 
 		function afficherPaniers($id){
 		//$sql="SElECT * From employe e inner join formationphp.employe a on e.cin= a.cin";
-		$sql="SElECT p.ID_PRO ,nom , prix , QTE From paniers p inner join produit pr on p.ID_PRO= pr.id where ID_P= :id";
+		$sql="SElECT p.ID_PRO ,nom , prix , QTE , image From paniers p inner join produit pr on p.ID_PRO= pr.id where ID_P= :id";
 		$db = config::getConnexion();
 		try{
 		$req=$db->prepare($sql);

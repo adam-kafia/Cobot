@@ -58,7 +58,7 @@ require 'header.php'
        <br>
        <br>
 
-    <div class="site-section">
+       <div class="site-section">
       <div class="container">
         <div class="row mb-5">
           <form action ="HisCmdF.php" class="col-md-12" method="post">
@@ -132,7 +132,7 @@ require 'header.php'
                        <?php 
              $panier=new PanierC();
 
-              $listeproduits  =$panier->afficherProduits($idC);
+              $listeproduits  =$panier->afficherPaniers($idC);
               
                
               foreach ($listeproduits as $p ) { 

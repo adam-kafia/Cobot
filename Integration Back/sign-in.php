@@ -103,7 +103,7 @@ if ( ! empty( $_POST ) )
 <!-- HEADER ON DESKTOP -->
 <nav class="navbar-desktop">
 	<div class="left">
-		<a href="index.html" class="logo">
+		<a href="../projet/front/index.html" class="logo">
 			<img src="images/logo.png" alt="Royate">
 		</a>
 	</div>

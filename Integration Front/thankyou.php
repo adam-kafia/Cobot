@@ -111,18 +111,18 @@
 							<div class="wrapper">
 								<ul>
 									<li>
-										<a href="shop-list.html">Shop List</a>
+										<a href="shop-list.php">Shop List</a>
 									</li>
-										<a href="shop-cart.html">Shop Cart</a>
+										<a href="shop-cart.php">Shop Cart</a>
 									</li>
 									<li>
-										<a href="sign-in.html">Sign In</a>
+										<a href="sign-in.php">Sign In</a>
 									</li>
 									<li>
 										<a href="sign-up.html">Sign Up</a>
 									</li>
 									<li>
-										<a href="checkout.html">CheckOut</a>
+										<a href="shop-cart.php">CheckOut</a>
 									</li>
 								</ul>
 							</div>
@@ -130,11 +130,6 @@
 					</li>
 				</ul>
 				
-				<div class="right">
-					<div class="action">
-						<div class="notify">
-							<img src="images/notify.png" alt="">
-							<span class="notify-amount">0</span>
 			
 							<!-- WIDGET SHOPPING -->
 							

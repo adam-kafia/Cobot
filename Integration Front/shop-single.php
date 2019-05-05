@@ -342,7 +342,7 @@ $resultat=$produitC->recupererProduit($id);
 								</div>
 								<form class="cart" method="post" action="ajoutpanier.php" enctype="multipart/form-data">
 									<div class="quantity">
-										<input type="number" class="input-text qty text" step="1" min="1" max="15" name="qte" value="1" title="qte" size="4" id="qte" >
+										<input type="number" class="form-control" step="1" min="1" max="15" name="qte" value="1" title="qte" size="4" id="qte" >
 										<div class="icon">
 											<a href="#" class="number-button plus">+</a>
 											<a href="#" class="number-button minus">-</a>

@@ -30,7 +30,7 @@ class PanierC{
 {
 
 	
-	$sql="update  panier set QTE =:qte where ID_PRO =:id ";
+	$sql="update  paniers set QTE =:qte where ID_PRO =:id ";
 		
 		$db = config::getConnexion();
 		try{

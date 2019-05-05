@@ -519,7 +519,7 @@ $_SESSION['singleShop']=0;
                     if($total > 0)
                     {
                       ?>
-                      <button class="btn btn-primary btn-lg py-3 btn-block"  onclick="window.location='checkout.php'">Proceed To Checkout</button>
+                      <button class="btn btn-primary btn-lg py-3 btn-block"  onclick="window.location='checkout.php'">Proceed To Checkout</button> <br><br>
                    <?php 
                     }
                     
