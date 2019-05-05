@@ -32,7 +32,7 @@ class CategorieC {
         }	
 	}
 	function supprimerCategorie($id){
-		$sql="DELETE FROM categorie where id= :id";
+		$sql="DELETE FROM categorie where id_c= :id";
 		$db = config::getConnexion();
         $req=$db->prepare($sql);
 		$req->bindValue(':id',$id);
@@ -44,7 +44,7 @@ class CategorieC {
         }
 	}
 	function modifierCategorie($categorie,$id){
-		$sql="UPDATE categorie SET nom_c = :nom_c where id = :id";
+		$sql="UPDATE categorie SET nom_c = :nom_c where id_c = :id";
 		$db = config::getConnexion();
 	try{		
         $req=$db->prepare($sql);
@@ -60,7 +60,7 @@ class CategorieC {
 		
 	}
 	function recupererCategorie($id){
-		$sql="SELECT * from categorie where id=$id";
+		$sql="SELECT * from categorie where id_c=$id";
 		$db = config::getConnexion();
 		try{
 		    $sth = $db->prepare($sql);
@@ -74,7 +74,7 @@ class CategorieC {
 	}
 
 	function recupererCategoriePro($id){
-		$sql="SELECT * from categorie where id=$id";
+		$sql="SELECT * from categorie where id_c=$id";
 		$db = config::getConnexion();
 		try{
 		    $sth = $db->prepare($sql);

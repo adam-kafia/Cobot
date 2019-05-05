@@ -108,7 +108,7 @@ class ProduitC {
 	}
 
 	function rechercherListeEmployesParCat($cat){
-		$sql="SELECT * from produit,categorie where produit.categorie_id=categorie.id and categorie.nom_c='$cat'";
+		$sql="SELECT * from produit,categorie where produit.categorie_id=categorie.id_c and categorie.nom_c='$cat'";
 		$db = config::getConnexion();
 		try{
 		 $sth = $db->prepare($sql);

@@ -1,3 +1,6 @@
+<?php
+include "core/commandeC.php";
+?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -85,8 +88,37 @@ require 'header.php'
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text">$<span class="count">23569</span></div>
-                                            <div class="stat-heading">Revenue</div>
+                                     <?php   $query = "select count(*) From commandes";
+	$db = config::getConnexion();
+	try{
+		$result = $db->query($query);
+		$l=$result->fetch(0);
+	}
+	catch (Exception $e){
+        die('Erreur: '.$e->getMessage());
+    }
+    $q = "select sum(prix_t) From commandes";
+	$db = config::getConnexion();
+	try{
+		$r = $db->query($q);
+		$a=$r->fetch(0);
+	}
+	catch (Exception $e){
+        die('Erreur: '.$e->getMessage());
+    }
+    $q1 = "select count(*) From produit";
+	$db = config::getConnexion();
+	try{
+		$r1 = $db->query($q1);
+		$a1=$r1->fetch(0);
+	}
+	catch (Exception $e){
+        die('Erreur: '.$e->getMessage());
+    }
+
+        ?>
+                                            <div class="stat-text"><span class="count"><?php echo $a[0]; ?></span> Dt</div>
+                                            <div class="stat-heading">Revenus</div>
                                         </div>
                                     </div>
                                 </div>
@@ -103,8 +135,8 @@ require 'header.php'
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">3435</span></div>
-                                            <div class="stat-heading">Sales</div>
+                                            <div class="stat-text"><span class="count"><?php echo $l[0]; ?></span></div>
+                                            <div class="stat-heading">Nombre De Commandes</div>
                                         </div>
                                     </div>
                                 </div>
@@ -121,8 +153,8 @@ require 'header.php'
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">349</span></div>
-                                            <div class="stat-heading">Templates</div>
+                                            <div class="stat-text"><span class="count"><?php echo $a1[0]; ?></span></div>
+                                            <div class="stat-heading">Nombre De Produits</div>
                                         </div>
                                     </div>
                                 </div>
@@ -139,8 +171,8 @@ require 'header.php'
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">2986</span></div>
-                                            <div class="stat-heading">Clients</div>
+                                            <div class="stat-text"><span class="count">1</span></div>
+                                            <div class="stat-heading">Nombre De Clients</div>
                                         </div>
                                     </div>
                                 </div>

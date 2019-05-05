@@ -354,7 +354,7 @@ if (isset($_GET['orderby']))
 										<li>
 											<form method="get" action ="shop-list.php" class="search-form">
 											<button class="btn btn-light" type="submit">
-											<?php echo $categorie['nom_c'];echo "<span> (";echo $produitC->nbProdParCat($categorie['id']); echo ")</span>";?>
+											<?php echo $categorie['nom_c'];echo "<span> (";echo $produitC->nbProdParCat($categorie['id_c']); echo ")</span>";?>
 											<input class="form-control" name="inputCat" type="hidden" value="<?php echo $categorie['nom_c'];?>">
 											</button>
 											</form>
